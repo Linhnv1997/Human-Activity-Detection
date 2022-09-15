@@ -69,11 +69,15 @@ while True:
             else:
                 lm_list.append(data)
                 # print("Client: ",data)
-                if len(lm_list) == 500:
+                if len(lm_list) % 20 == 0:
                     df = pd.DataFrame(lm_list)
-                    df.to_csv("Standing_kict.text")
-                    break
+                    df.to_csv("Swing_hand_kict.text",mode='a', header=False)
+                    lm_list = []
+                    
+            if i ==100:
+                break
             print("i = ",i)
+            print(len(lm_list))
             # msg = input("Server: ")
         
     finally:

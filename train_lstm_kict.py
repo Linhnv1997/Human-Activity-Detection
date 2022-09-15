@@ -10,15 +10,15 @@ import os
 from sklearn.model_selection import train_test_split
 
 # Đọc dữ liệu
-standing_df = pd.read_csv("Standing_kict.text")
-eating_df = pd.read_csv("Eating_kict.text")
-nothing_df = pd.read_csv("Do_nothing_kict.text")
+standing_df = pd.read_csv("./Data/Standing.txt")
+eating_df = pd.read_csv("./Data/Eating.txt")
+watching_df = pd.read_csv("./Data/Watching_TV.txt")
 # clapp_df = pd.read_csv("Clapping.txt")
-handswing_df = pd.read_csv("Swing_hand_kict.text")
+talking_df = pd.read_csv("./Data/talking.txt")
 
 X = []
 y = []
-no_of_timesteps = 10
+no_of_timesteps = 20
 
 
 dataset = standing_df.iloc[:,1:].values
@@ -33,20 +33,13 @@ for i in range(no_of_timesteps, n_sample):
     X.append(dataset[i-no_of_timesteps:i,:])
     y.append(np.array([0., 1., 0.,0.]))
 
-dataset = nothing_df.iloc[:,1:].values
+dataset = watching_df.iloc[:,1:].values
 n_sample = len(dataset)
 for i in range(no_of_timesteps, n_sample):
     X.append(dataset[i-no_of_timesteps:i,:])
     y.append(np.array([0., 0., 1.,0.]))
 
-
-# dataset = clapp_df.iloc[:,1:].values
-# n_sample = len(dataset)
-# for i in range(no_of_timesteps, n_sample):
-#     X.append(dataset[i-no_of_timesteps:i,:])
-#     y.append(np.array([0., 0., 0.,1.,0.]))
-
-dataset = handswing_df.iloc[:,1:].values
+dataset = talking_df.iloc[:,1:].values
 n_sample = len(dataset)
 for i in range(no_of_timesteps, n_sample):
     X.append(dataset[i-no_of_timesteps:i,:])
@@ -77,7 +70,7 @@ model.add(Dropout(0.2))
 model.add(Dense(units =4, activation="softmax"))
 model.compile(optimizer="adam", metrics = ['accuracy'], loss = "categorical_crossentropy")
 
-model.fit(X_train, y_train, epochs=20, batch_size=32,validation_data=(X_test, y_test))
+model.fit(X_train, y_train, epochs=20, batch_size=64,validation_data=(X_test, y_test))
 model.save("modellstm.h5")
 
 
